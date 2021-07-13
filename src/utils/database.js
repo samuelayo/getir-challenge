@@ -15,4 +15,11 @@ const connect = async (connectionUri) => {
   return conn
 };
 
-module.exports = connect
+const closeConnection = () => {
+  mongoose.connection.close();
+}
+
+module.exports = {
+  connect, 
+  closeConnection
+}

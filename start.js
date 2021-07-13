@@ -1,4 +1,4 @@
-const connect = require('./src/utils/database');
+const { connect, closeConnection } = require('./src/utils/database');
 const app = require('./src/config/express');
 const recordRoutes = require('./src/routes/recordRoute')
 const CustomError = require('./src/utils/customError');
@@ -34,11 +34,19 @@ class Start{
             console.info(`${new Date().toISOString()}: app listening on ${this.port}`)
         })
     }
+
+    handleCloseUp(){
+        process.on('SIGTERM', () => {
+            closeConnection();
+        });   
+    }
+
     async startExpress(){
         try {
             await this.connectDB();
             this.setAppRoutes();
             this.listenOnApp();
+            this.handleCloseUp();
         } catch (e) {
             console.error(`${__filename}: Fatal error while starting up app: ${e && e.message}`)
         }

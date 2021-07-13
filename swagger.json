@@ -16,7 +16,7 @@
     "paths": {
       "/fetch": {
         "post": {
-          "description": "Allows user to query records and return response based onquery parameters",
+          "description": "Allows user to query records and return response based on query parameters",
           "requestBody": {
             "content": {
               "application/json": {

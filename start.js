@@ -1,3 +1,4 @@
+const { onShutdown } = require("node-graceful-shutdown");
 const { connect, closeConnection } = require('./src/utils/database');
 const app = require('./src/config/express');
 const recordRoutes = require('./src/routes/recordRoute')
@@ -36,9 +37,10 @@ class Start{
     }
 
     handleCloseUp(){
-        process.on('SIGTERM', () => {
+        onShutdown("http-server", async function () {
             closeConnection();
-        });   
+            process.exit();
+        });          
     }
 
     async startExpress(){

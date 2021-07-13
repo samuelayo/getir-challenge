@@ -1,0 +1,102 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Getir challenge",
+      "description": "Getir challenge",
+      "version": "1.0.0",
+      "contact": {
+        "email": "hi@samuel.com.ng"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8000"
+      }
+    ],
+    "paths": {
+      "/fetch": {
+        "post": {
+          "description": "Allows user to query records and return response based onquery parameters",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "startDate",
+                    "endDate",
+                    "minCount",
+                    "maxCount"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "startDate": {
+                      "type": "string",
+                      "example": "2013-01-06"
+                    },
+                    "endDate": {
+                      "type": "string",
+                      "example": "2016-01-12"
+                    },
+                    "minCount": {
+                      "type": "integer",
+                      "example": 2700
+                    },
+                    "maxCount": {
+                      "type": "integer",
+                      "example": 2800
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            },
+            "400": {
+              "description": "Invalid request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "msg": {
+                        "type": "string",
+                        "example": "Success"
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string",
+                              "example": "uLQICSdH"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2017-01-27T08:19:14.135Z"
+                            },
+                            "totalCount": {
+                              "type": "integer",
+                              "example": 2900
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

@@ -27,7 +27,11 @@ class Start{
         app.use(`/guide`, swaggerUI.serve, swaggerUI.setup(swaggerFile));
         app.use(`/healthCheck`, (_, res) => res.status(200).json({ok: true, message: "Server up! Go to /guide to see usage guide."}));
         app.use('/records', recordRoutes);
-        //app.use((req, res) => notFound(res, 'Opps, page not found!'));
+        app.use((_, _, next) => {
+            var err = new CustomError('Not Found', 404);
+            err.status = 404;
+            next(err);
+        });
     }
 
     listenOnApp(){

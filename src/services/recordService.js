@@ -1,4 +1,4 @@
-const recordModel = require('../models/record');
+const recordModel = require('../models/Record');
 const recordQueries = require('../queries/recordQueries');
 
 const fetchRecord = async ({

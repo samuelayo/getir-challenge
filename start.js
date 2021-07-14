@@ -11,6 +11,11 @@ class Start{
         this.port = process.env.PORT || 8000;
     }
 
+    /**
+     * @param null 
+     * ensure database connection is connected
+     * @returns Void
+     */
     async connectDB(){
         const connectionUri = process.env.DEFAULT_DATABASE_URI;
         if(!connectionUri){
@@ -23,30 +28,50 @@ class Start{
         await connect(connectionUri);
     }
 
+    /**
+     * @param null 
+     * set up routes for the app 
+     * @returns Void
+     */
     setAppRoutes(){
         app.use(`/guide`, swaggerUI.serve, swaggerUI.setup(swaggerFile));
         app.use(`/healthCheck`, (_, res) => res.status(200).json({ok: true, message: "Server up! Go to /guide to see usage guide."}));
         app.use('/records', recordRoutes);
-        app.use((_, _, next) => {
+        app.use((_req, _res, next) => {
             var err = new CustomError('Not Found', 404);
             err.status = 404;
             next(err);
         });
     }
 
+    /**
+     * @param null 
+     * listen on given port 
+     * @returns Void
+     */
     listenOnApp(){
-        app.listen(this.port, () => {
+        this.server = app.listen(this.port, () => {
             console.info(`${new Date().toISOString()}: app listening on ${this.port}`)
         })
     }
 
+    /**
+     * @param null 
+     * close up connections when process is being terminated
+     * @returns Void
+     */
     handleCloseUp(){
-        onShutdown("http-server", async function () {
-            closeConnection();
+        onShutdown("http-server", async  () => {
+            await this.closeServer();
             process.exit();
         });          
     }
 
+    /**
+     * @param null 
+     * Load up and start the express app
+     * @returns Void
+     */
     async startExpress(){
         try {
             await this.connectDB();
@@ -57,6 +82,16 @@ class Start{
             console.error(`${__filename}: Fatal error while starting up app: ${e && e.message}`)
         }
         
+    }
+
+    /**
+     * @param null 
+     * wraps up the express server
+     * @returns Void
+     */
+    async closeServer(){
+        await closeConnection();
+        this.server.close();
     }
 }
 

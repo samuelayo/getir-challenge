@@ -38,8 +38,11 @@ const processFetch = async(req, res) => {
             records,
           })
     } catch (error) {
-        console.log(error)
-        return res.status(error.code).json( { error: (error.error || error.message) });
+        return res.status(error.code).json( {
+            code: error.code,
+            msg: 'unsuccessful', 
+            error: (error.error || error.message) 
+        });
     }
 }
 

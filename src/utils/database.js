@@ -5,7 +5,7 @@ const connect = async (connectionUri) => {
   connection.on('close', () => console.info(`${__filename}:connect:close Connection to mongodb has been closed`));
   connection.on('error', (e) => console.error(`${__filename}:connect:FATAL Connection to mongodb has thrown error with: ${e && e.message}`));
     console.info(`${__filename}:connect opening connection to database`);
-    const conn = mongoose.connect(connectionUri, {
+    const conn = await mongoose.connect(connectionUri, {
         useUnifiedTopology: true,
         useCreateIndex: true,
         useNewUrlParser: true,
@@ -15,8 +15,8 @@ const connect = async (connectionUri) => {
   return conn
 };
 
-const closeConnection = () => {
-  mongoose.connection.close();
+const closeConnection = async () => {
+  await mongoose.connection.close();
 }
 
 module.exports = {

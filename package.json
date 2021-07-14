@@ -4,7 +4,8 @@
   "description": "getir challenge with node",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "jest --coverage",
+    "start": "node index.js"
   },
   "keywords": [
     "getir"
@@ -23,6 +24,8 @@
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
-    "morgan": "^1.10.0"
+    "jest": "^27.0.6",
+    "morgan": "^1.10.0",
+    "supertest": "^6.1.3"
   }
 }
